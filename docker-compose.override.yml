@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+    frontend:
+        image: bitbyt3r/play-magfest-frontend:latest
+        restart: on-failure
+        network_mode: host
+        ports:
+            - 5442:5442/tcp
+        environment:
+            - SERVER_PORT=5442
+            - OPENVIDU_URL=http://localhost:5443
+            - BACKEND_URL=localhost:8081
+    backend:
+        image: bitbyt3r/play-magfest-backend:latest
+        restart: on-failure
+        network_mode: host
+        ports:
+            - 8081:8081/tcp
+        environment:
+            - SERVER_PORT=8081
+            - OPENVIDU_URL=http://localhost:5443
+            - OPENVIDU_SECRET=${OPENVIDU_SECRET}
+            - REDIS_PASSWORD=${OPENVIDU_SECRET}
+            - REDIS_HOST=127.0.0.1
+            - REDIS_PORT=6379
